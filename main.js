@@ -5,7 +5,7 @@ import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources
 // THREE.JS COMMOM SETUP
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, innerWidth / innerHeight, 0.1, 1000 );
+const camera = new THREE.PerspectiveCamera( 75, innerWidth / innerHeight, 0.1, 3000 );
 
 const renderer = new THREE.WebGL1Renderer();
 
@@ -19,15 +19,44 @@ let controls = new OrbitControls(camera, renderer.domElement);
 
 
 // Geometries
-const planeGeometry = new THREE.PlaneGeometry(2, 2, 20, 20);
-const planeMaterial = new THREE.MeshPhongMaterial({
-  // color: 0xff0000,
-  side: THREE.DoubleSide,
-  flatShading: THREE.FlatShading,
-});
-const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-scene.add(planeMesh);
-camera.position.z = 5;
+let geometry = new THREE.SphereGeometry(1,100,50);
+geometry.scale(-2, 2, 2);
+
+let material = new THREE.MeshBasicMaterial( {
+  map: new THREE.TextureLoader().load( './image/earthmap1k.jpg' ),
+  specularMap: new THREE.TextureLoader().load( './images/earthspec1k.jpg' ),
+  specular: new THREE.Color('gray')
+} );
+const cube = new THREE.Mesh ( geometry, material )
+scene.add( cube )
+scene.background = new THREE.Color(0x0000)
+renderer.render( scene, camera )
+camera.position.z = 15
+
+geometry = new THREE.SphereGeometry( 0.370, 100, 100 )
+material = new THREE.MeshBasicMaterial( {
+  map: new THREE.TextureLoader().load( './image/2k_moon.jpg' ),
+} );
+const meshMoon = new THREE.Mesh ( geometry, material )
+meshMoon.position.set(10, 0, 0)
+scene.add( meshMoon )
+
+geometry = new THREE.BufferGeometry();
+const vertices = [];
+for (let i = 0; i < 6000; i++) {
+  vertices.push(THREE.MathUtils.randFloatSpread(2000)); // x
+  vertices.push(THREE.MathUtils.randFloatSpread(2000)); // y
+  vertices.push(THREE.MathUtils.randFloatSpread(2000)); // z
+}
+geometry.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(vertices, 3)
+);
+let particles = new THREE.Points(
+  geometry,
+  new THREE.PointsMaterial({ color: 0x888888 })
+);
+scene.add(particles);
 
 // Light
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -38,7 +67,6 @@ scene.add(light);
 const backLight = new THREE.DirectionalLight(0xffffff, 1);
 backLight.position.set(0, 0, -1);
 scene.add(backLight);
-
 
 // MAKE CAMERA RESPOSIVE
 window.addEventListener( 'resize', onWindowResize, false );
@@ -54,6 +82,10 @@ function onWindowResize() {
 const animate = () => {
   requestAnimationFrame( animate );
   controls.update();
-  renderer.render( scene, camera );
+  cube.rotation.y += 0.005;
+  cube.rotation.x += 0.001;
+  meshMoon.rotation.x += 0.0001
+  scene.rotation.y -= 0.003;
+  renderer.render(scene,camera);
 }
 animate()
