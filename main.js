@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
 
 // Declarations
-var earthOrbitRadius = 100,
+let earthOrbitRadius = 100,
     earthOrbitAngle = 0,
     earthOrbitSpeed = 0.5,
     
@@ -48,11 +48,11 @@ const addPlanets = (sphX, posX, posY, posZ, texture, plan) => {
   console.log(planets)
 }
 
-camera.position.set(25,2,10)
+camera.position.set(0,100,200)
 renderer.render( scene, camera )
 
-addPlanets(50, -200, 0, 0, './image/8k_sun.jpg')
-addPlanets(0.5, 20, 0, 0, './image/earthmap1k.jpg')
+addPlanets(50, 0, 0, 0, './image/8k_sun.jpg')
+addPlanets(0.5, 40, 0, 0, './image/earthmap1k.jpg')
 
 geometry = new THREE.BufferGeometry();
 const vertices = [];
@@ -95,11 +95,12 @@ function onWindowResize() {
 const animate = () => {
   requestAnimationFrame( animate );
   controls.update();
-  // let earthOrbitAngle += earthOrbitSpeed; 
-  // var radians = earthOrbitAngle * Math.PI / 180;
+  earthOrbitAngle += earthOrbitSpeed; 
+  var radians = earthOrbitAngle * Math.PI / 180;
 
-  // planets[0].position.x = Math.cos(radians) * earthOrbitRadius;
-  // planets[0].position.z = Math.sin(radians) * earthOrbitRadius;
+  planets[1].rotation.x += 0.01
+  planets[1].position.x = Math.cos(radians) * earthOrbitRadius;
+  planets[1].position.z = Math.sin(radians) * earthOrbitRadius;
   renderer.render(scene,camera);
 }
 animate()
