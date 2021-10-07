@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
 
 // Declarations
-let earthOrbitRadius = 2500,
+let earthOrbitRadius = 5000,
     OrbitAngle = 0,
     OrbitSpeed = 0.5,
     
@@ -11,14 +11,13 @@ let earthOrbitRadius = 2500,
     moonOrbitAngle = 0,
     moonOrbitSpeed = 4;
 
-let mercuryOrbitRadius = 1000;
-let venusOrbitRadius = 1380;
+let mercuryOrbitRadius = 2000;
+let venusOrbitRadius = 2760;
 
 // THREE.JS COMMOM SETUP
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, innerWidth / innerHeight, 0.1, 60000 );
-// camera.position.set( 0, 0, 0 );
 
 const renderer = new THREE.WebGL1Renderer();
 
@@ -51,7 +50,7 @@ const addPlanets = (sphX, posX, posY, posZ, texture) => {
   console.log(planets)
 }
 
-camera.position.set(0,400,3500)
+camera.position.set(0,400,2500)
 renderer.render( scene, camera )
 
 addPlanets(595, 0, 0, 0, './image/8k_sun.jpg')
