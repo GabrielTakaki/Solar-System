@@ -12,6 +12,7 @@ let earthOrbitRadius = 2500,
     moonOrbitSpeed = 4;
 
 let mercuryOrbitRadius = 1000;
+let venusOrbitRadius = 1380;
 
 // THREE.JS COMMOM SETUP
 
@@ -56,6 +57,7 @@ renderer.render( scene, camera )
 addPlanets(595, 0, 0, 0, './image/8k_sun.jpg')
 addPlanets(5, 0, 0, 0, './image/earthmap1k.jpg')
 addPlanets(2.5, 0, 0, 0, './image/mercury.jpg')
+addPlanets(5.17, 0, 0, 0, './image/venus.jpg')
 
 geometry = new THREE.SphereGeometry(15000,100,50);
 geometry.scale(-2, 2, 2);
@@ -88,20 +90,34 @@ function onWindowResize() {
   renderer.setSize(innerWidth, innerHeight);
 }
 
-const animate = () => {
-  requestAnimationFrame( animate );
-  controls.update();
+function rotationAroundTheSun() {
   OrbitAngle += OrbitSpeed; 
   let earthRadians = OrbitAngle * Math.PI / 365;
   let mercuryRadians = OrbitAngle * Math.PI / 88;
+  let venusRadians = OrbitAngle * Math.PI / 224;
 
   planets[0].rotation.x += 0.0002;
   planets[0].rotation.y += 0.0002;
   planets[1].rotation.x += 0.01;
+  
+  // ROTATION AROUND THE SUN
+  // Earth 
   planets[1].position.x = Math.cos(earthRadians) * earthOrbitRadius;
   planets[1].position.z = Math.sin(earthRadians) * earthOrbitRadius;
+
+  // Mercury
   planets[2].position.z = Math.sin(mercuryRadians) * mercuryOrbitRadius;
   planets[2].position.x = Math.cos(mercuryRadians) * mercuryOrbitRadius;
+
+  // Venus
+  planets[3].position.z = Math.sin(venusRadians) * venusOrbitRadius;
+  planets[3].position.x = Math.cos(venusRadians) * venusOrbitRadius;
+}
+
+const animate = () => {
+  requestAnimationFrame( animate );
+  controls.update();
+  rotationAroundTheSun();
   renderer.render(scene,camera);
 }
 animate()
