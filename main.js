@@ -3,19 +3,21 @@ import * as THREE from 'three';
 import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
 
 // Declarations
-let earthOrbitRadius = 100,
-    earthOrbitAngle = 0,
-    earthOrbitSpeed = 0.5,
+let earthOrbitRadius = 2500,
+    OrbitAngle = 0,
+    OrbitSpeed = 0.5,
     
     moonOrbitRadius = 10,
     moonOrbitAngle = 0,
     moonOrbitSpeed = 4;
 
+let mercuryOrbitRadius = 1000;
+
 // THREE.JS COMMOM SETUP
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, innerWidth / innerHeight, 0.1, 3000 );
-camera.position.set( 0, 0, 0 );
+const camera = new THREE.PerspectiveCamera( 75, innerWidth / innerHeight, 0.1, 60000 );
+// camera.position.set( 0, 0, 0 );
 
 const renderer = new THREE.WebGL1Renderer();
 
@@ -34,7 +36,7 @@ let geometry, material;
 let timestamp = 0;
 let scaleVector = new THREE.Vector3();
 
-const addPlanets = (sphX, posX, posY, posZ, texture, plan) => {
+const addPlanets = (sphX, posX, posY, posZ, texture) => {
   geometry = new THREE.SphereGeometry(sphX, 100, 50);
   // geometry.scale(-2, 2, 2);
   material = new THREE.MeshBasicMaterial( {
@@ -48,28 +50,22 @@ const addPlanets = (sphX, posX, posY, posZ, texture, plan) => {
   console.log(planets)
 }
 
-camera.position.set(0,100,200)
+camera.position.set(0,400,3500)
 renderer.render( scene, camera )
 
-addPlanets(50, 0, 0, 0, './image/8k_sun.jpg')
-addPlanets(0.5, 40, 0, 0, './image/earthmap1k.jpg')
+addPlanets(595, 0, 0, 0, './image/8k_sun.jpg')
+addPlanets(5, 0, 0, 0, './image/earthmap1k.jpg')
+addPlanets(2.5, 0, 0, 0, './image/mercury.jpg')
 
-geometry = new THREE.BufferGeometry();
-const vertices = [];
-for (let i = 0; i < 10000; i++) {
-  vertices.push(THREE.MathUtils.randFloatSpread(4000)); // x
-  vertices.push(THREE.MathUtils.randFloatSpread(4000)); // y
-  vertices.push(THREE.MathUtils.randFloatSpread(2000)); // z
-}
-geometry.setAttribute(
-  "position",
-  new THREE.Float32BufferAttribute(vertices, 3)
-);
-let particles = new THREE.Points(
-  geometry,
-  new THREE.PointsMaterial({ color: 0x888888 })
-);
-scene.add(particles);
+geometry = new THREE.SphereGeometry(15000,100,50);
+geometry.scale(-2, 2, 2);
+
+material = new THREE.MeshBasicMaterial( {
+  map: new THREE.TextureLoader().load( './image/galaxy.jpg' )
+} );
+const cube = new THREE.Mesh ( geometry, material )
+scene.add( cube )
+scene.background = new THREE.Color(0x0000)
 
 // Light
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -95,12 +91,17 @@ function onWindowResize() {
 const animate = () => {
   requestAnimationFrame( animate );
   controls.update();
-  earthOrbitAngle += earthOrbitSpeed; 
-  var radians = earthOrbitAngle * Math.PI / 180;
+  OrbitAngle += OrbitSpeed; 
+  let earthRadians = OrbitAngle * Math.PI / 365;
+  let mercuryRadians = OrbitAngle * Math.PI / 88;
 
-  planets[1].rotation.x += 0.01
-  planets[1].position.x = Math.cos(radians) * earthOrbitRadius;
-  planets[1].position.z = Math.sin(radians) * earthOrbitRadius;
+  planets[0].rotation.x += 0.0002;
+  planets[0].rotation.y += 0.0002;
+  planets[1].rotation.x += 0.01;
+  planets[1].position.x = Math.cos(earthRadians) * earthOrbitRadius;
+  planets[1].position.z = Math.sin(earthRadians) * earthOrbitRadius;
+  planets[2].position.z = Math.sin(mercuryRadians) * mercuryOrbitRadius;
+  planets[2].position.x = Math.cos(mercuryRadians) * mercuryOrbitRadius;
   renderer.render(scene,camera);
 }
 animate()
