@@ -4,12 +4,14 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "preview": "vite preview"
   },
   "devDependencies": {
     "vite": "^2.6.0"
   },
   "dependencies": {
-    "three": "^0.133.1"
+    "@vitejs/plugin-vue": "^2.0.1",
+    "three": "^0.133.1",
+    "vite-plugin-style-import": "^1.4.0"
   }
 }
