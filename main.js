@@ -20,7 +20,7 @@ let earthOrbitRadius = 2500,
 // THREE.JS COMMOM SETUP
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, innerWidth / innerHeight, 0.1, 70000 );
+const camera = new THREE.PerspectiveCamera( 75, innerWidth / innerHeight, 0.1, 700000 );
 
 const renderer = new THREE.WebGL1Renderer();
 
@@ -64,15 +64,13 @@ addPlanets(5.17, 0, 0, 0, './image/venus.jpg')
 addPlanets(10, 0, 0, 0, './image/mars.jpg')
 addPlanets(55, 0, 0, 0, './image/jupter.jpg')
 
-geometry = new THREE.SphereGeometry(20000,100,50);
+geometry = new THREE.SphereGeometry(60000,100,50);
 geometry.scale(-2, 2, 2);
-
 material = new THREE.MeshBasicMaterial( {
   map: new THREE.TextureLoader().load( './image/galaxy.jpg' )
 } );
 const cube = new THREE.Mesh ( geometry, material )
 scene.add( cube )
-scene.background = new THREE.Color(0x0000)
 
 // Light
 const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -99,14 +97,13 @@ function onWindowResize() {
 function rotationAroundTheSun() {
   // Days to orbit around the sun
   OrbitAngle += OrbitSpeed; 
-  let earthRadians = OrbitAngle * Math.PI / 365;
-  let mercuryRadians = OrbitAngle * Math.PI / 88;
-  let venusRadians = OrbitAngle * Math.PI / 224;
-  let marsRadians = OrbitAngle * Math.PI / 687;
-  let jupterRadians = OrbitAngle * Math.PI / 4333;
+  let earthRadians = OrbitAngle * Math.PI / 474;
+  let mercuryRadians = OrbitAngle * Math.PI / 114;
+  let venusRadians = OrbitAngle * Math.PI / 291;
+  let marsRadians = OrbitAngle * Math.PI / 893;
+  let jupterRadians = OrbitAngle * Math.PI / 5632;
 
-  planets[0].rotation.x += 0.0002;
-  planets[0].rotation.y += 0.0002;
+  planets[0].rotation.y += 0.001;
   planets[1].rotation.x += 0.01;
   planets[1].rotation.y += 0.01;
   planets[5].rotation.x += 0.001
@@ -133,6 +130,9 @@ function rotationAroundTheSun() {
   planets[5].position.z = Math.sin(jupterRadians) * jupterOrbitRadius;
   planets[5].position.x = Math.cos(jupterRadians) * jupterOrbitRadius;
 }
+controls.enableDamping = true;
+controls.maxDistance = 45000;
+// controls.minDistance = -45000;
 
 const animate = () => {
   requestAnimationFrame( animate );
