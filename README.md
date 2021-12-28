@@ -1,3 +1,3 @@
 # Solar System
 
-Mini personal project to develop my skills at Three.js.
+Small personal project to develop my skills at Three.js.
