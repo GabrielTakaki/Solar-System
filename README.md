@@ -21,8 +21,8 @@ This project is a simulation of our Solar System created using Three.js. It incl
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/yourusername/solar-system-simulation.git
-    cd solar-system-simulation
+    git clone git@github.com:GabrielTakaki/Solar-System.git
+    cd Solar-System
     ```
 
 2. Install dependencies:
